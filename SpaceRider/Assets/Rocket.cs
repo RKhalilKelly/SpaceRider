@@ -22,22 +22,34 @@ public class Rocket : MonoBehaviour
     public float t = 0;
     public float moveSpeed = 6;
 
+    public AudioSource audioSource;
+    public AudioClip pointsSound;
+    public AudioClip hitSound;
+    public AudioClip losesound;
+    
+    // Create a variable for your AudioSource
+    // Create a variable for your AudioClips (geting aa point, crashing, losing)
+
     // Start is called before the first frame update
     void Start()
     {
         s = GetComponent<SpriteRenderer>();
         health.text = "HP:" + hp;
         points.text = "Score: " + score;
+        // Get AudioSource Component and assign it to your AudioSource variable
+        audioSource = GetComponent<AudioSource>();
     }
 
     void KillPlayer()
     {
         s.enabled = false;
+        // play the sound for losing
+        audioSource.PlayOneShot(losesound);
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.name == "Asteroid")
+        if (col.gameObject.name == "Asteroid" && !isFlinching && isAlive)
         {
             hp = hp - 1;
             isFlinching = true;
@@ -47,11 +59,15 @@ public class Rocket : MonoBehaviour
                 isAlive = false;
             }
             health.text = "HP: " + hp;
+            audioSource.PlayOneShot(hitSound);
+            // play the hurt
         }
         if (col.gameObject.name == "Points" && !isFlinching && isAlive)
         {
             score = score + 1;
             points.text = "Score: " + score;
+            audioSource.PlayOneShot(pointsSound);
+            // play the sound for points
         }
         if (!isAlive)
         {

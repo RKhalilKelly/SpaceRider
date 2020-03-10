@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
 {
+
     public GameObject asteroidPrefab;
     public Vector3[] spawnPos;
     public float spawnInterval = 1;
     public float timer;
+
+
 
     // Update is called once per frame
     void Update()
